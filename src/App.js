@@ -8,6 +8,7 @@ import {dispatch} from './feed/ArticleDispatcher';
 import logo from './logo.svg';
 import './App.css';
 import Feed from './feed/Feed';
+import RSS from './RSS/RSS';
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
@@ -51,10 +52,7 @@ class App extends Component {
     return (
 
         <MuiThemeProvider muiTheme={muiTheme}>
-            <Tabs initialSelectedIndex={1}>
-                <Tab label="rejected">
-                    trash
-                </Tab>
+            <Tabs initialSelectedIndex={0}>
                 <Tab label="Feed">
                     <div className="App">
                         <div className="App-header">
@@ -62,8 +60,14 @@ class App extends Component {
                         <Feed articles={ unlabelled }/>
                     </div>
                 </Tab>
+                <Tab label="rejected">
+                    trash
+                </Tab>
                 <Tab label="accepted">
                     goodstuff
+                </Tab>
+                <Tab label="RSS Feeds">
+                    <RSS />
                 </Tab>
             </Tabs>
         </MuiThemeProvider>
