@@ -1,0 +1,17 @@
+.feed {
+
+}
+
+.feed h2 {
+  font-size: 2em;
+  color: #666;
+  text-transform: uppercase;
+  font-weight: 900;
+  padding: 2em 0;
+}
+
+.article {
+  text-align: left;
+  width: 80%;
+  margin: 2em auto;
+}
