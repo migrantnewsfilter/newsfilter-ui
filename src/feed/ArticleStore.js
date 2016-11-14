@@ -1,12 +1,18 @@
 import Immutable from 'immutable';
 import {ReduceStore} from 'flux/utils';
-import ArticleDispatcher from './ArticleDispatcher';
+import {ArticleDispatcher, dispatch} from './ArticleDispatcher';
 import io from 'socket.io-client';
+import axios from 'axios';
 
 class ArticleStore extends ReduceStore {
   constructor(dispatcher){
     super(dispatcher)
-    this.socket = io.connect('localhost:5000');
+
+    // connect to host!
+    const host = process.env.REACT_APP_NF_HOST || 'http://localhost:5000'
+    this.socket = io.connect(host);
+    axios.get(host + '/articles')
+      .then(a => dispatch({ type: 'articles/arrivals', articles: a.data }));
   }
 
   getInitialState() {
@@ -22,6 +28,7 @@ class ArticleStore extends ReduceStore {
       return state.setIn([action.id, 'label'], action.label);
 
     case 'articles/arrivals':
+      console.log('arrivals: ', action.articles)
       return action.articles.reduce((state, a) => {
         return state.set(a._id, Immutable.fromJS(a))
       }, state);

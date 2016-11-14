@@ -39,7 +39,7 @@ class Article extends Component {
 
     return (
       <Card  className="article">
-          <CardHeader title={ content.get('title') } subtitle={ date }/>
+          <CardHeader title={ content.get('title') || content.get('author') } subtitle={ date }/>
 
           <CardText className="body">
               { content.get('body') }

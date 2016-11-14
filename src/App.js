@@ -21,18 +21,6 @@ import {Tabs, Tab} from 'material-ui/Tabs';
 import muiTheme from './theme';
 
 class App extends Component {
-
-  constructor() {
-    super();
-
-  //   this.state = {
-  //     articles: []
-  //   }
-
-    axios.get('http://localhost:5000/articles')
-      .then(a => dispatch({ type: 'articles/arrivals', articles: a.data }));
-  }
-
   static getStores() {
     return [ArticleStore];
   }
