@@ -8,11 +8,9 @@ class ArticleStore extends ReduceStore {
   constructor(dispatcher){
     super(dispatcher)
 
-    // connect to host!
-    const host = process.env.REACT_APP_NF_HOST || 'http://localhost:5000'
-    this.socket = io.connect(host);
-    axios.get(host + '/articles')
-      .then(a => dispatch({ type: 'articles/arrivals', articles: a.data }));
+    this.host = process.env.REACT_APP_NF_HOST || 'http://localhost:5000'
+    this.socket = io.connect(this.host);
+    dispatch({ type: 'articles/load' });
   }
 
   getInitialState() {
@@ -26,6 +24,11 @@ class ArticleStore extends ReduceStore {
       console.log(action.label)
       this.socket.emit('label', { '_id': action.id, 'label': action.label })
       return state.setIn([action.id, 'label'], action.label);
+
+    case 'articles/load':
+      axios.get(this.host + '/articles?start=' + state.size)
+        .then(a => dispatch({ type: 'articles/arrivals', articles: a.data }));
+      return state
 
     case 'articles/arrivals':
       console.log('arrivals: ', action.articles)

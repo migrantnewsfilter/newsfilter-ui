@@ -27,7 +27,6 @@ class Article extends Component {
     const { article } = this.props;
     const content = article.get('content');
     const date = new Date(article.get('added').get('$date')).toLocaleString();
-
     const actionsStyles = {};
     const trashStyles = {};
     const archiveStyles = {
@@ -39,7 +38,7 @@ class Article extends Component {
 
     return (
       <Card  className="article">
-          <CardHeader title={ content.get('title') || content.get('author') } subtitle={ date }/>
+          <CardHeader title={ content.get('title') || '@' + content.get('author') } subtitle={ 'Relevance: ' + (article.get('prediction') || 0)  + ' Date: ' + date }/>
 
           <CardText className="body">
               { content.get('body') }

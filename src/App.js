@@ -8,7 +8,7 @@ import {dispatch} from './feed/ArticleDispatcher';
 import logo from './logo.svg';
 import './App.css';
 import Feed from './feed/Feed';
-import RSS from './RSS/RSS';
+import Sources from './sources/Sources';
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
@@ -54,8 +54,8 @@ class App extends Component {
                 <Tab label="accepted">
                     goodstuff
                 </Tab>
-                <Tab label="RSS Feeds">
-                    <RSS />
+                <Tab label="Sources">
+                    <Sources />
                 </Tab>
             </Tabs>
         </MuiThemeProvider>
