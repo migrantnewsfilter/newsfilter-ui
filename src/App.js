@@ -3,8 +3,8 @@ import axios from 'axios';
 
 import {Container} from 'flux/utils';
 import ArticleStore from './feed/ArticleStore';
+import ClusterStore from './feed/ClusterStore';
 import {dispatch} from './feed/ArticleDispatcher';
-
 import logo from './logo.svg';
 import './App.css';
 import Feed from './feed/Feed';
@@ -27,32 +27,29 @@ class App extends Component {
 
   static calculateState(prevState) {
     return {
-      articles: ArticleStore.getState()
+      articles: ArticleStore.getState(),
+			highlightedCluster: ClusterStore.getState()
     };
   }
 
   render() {
 
-    // const trash = this.state.articles.filter(a => a.label === 'rejected');
-    // const archive = this.state.articles.filter(a => a.label === 'accepted');
+		const trash = this.state.articles.filter(a => a.get('label') === 'rejected');
+		const archive = this.state.articles.filter(a => a.get('label') === 'accepted');
     const unlabelled = this.state.articles.filter(a => !a.get('label'));
 
     return (
 
         <MuiThemeProvider muiTheme={muiTheme}>
-            <Tabs initialSelectedIndex={0}>
+            <Tabs initialSelectedIndex={0} className="feeds">
                 <Tab label="Feed">
-                    <div className="App">
-                        <div className="App-header">
-                        </div>
-                        <Feed articles={ unlabelled }/>
-                    </div>
+                    <Feed articles={ unlabelled } header="New Articles" highlighted={this.state.highlightedCluster}/>
                 </Tab>
                 <Tab label="rejected">
-                    trash
+                    <Feed articles={ trash } header="Rejected Articles" label="rejected" highlighted={this.state.highlightedCluster}/>
                 </Tab>
                 <Tab label="accepted">
-                    goodstuff
+                    <Feed articles={ archive } header="Accepted Articles" label="accepted"  highlighted={this.state.highlightedCluster} />
                 </Tab>
                 <Tab label="Sources">
                     <Sources />
