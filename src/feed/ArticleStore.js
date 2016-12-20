@@ -50,7 +50,8 @@ class ArticleStore extends ReduceStore {
 
 			const qs = querystring.stringify({
 				start: start,
-				label: action.label
+				label: action.label,
+				days: 10
 			})
 
       axios.get(this.host + '/articles?' +  qs)
