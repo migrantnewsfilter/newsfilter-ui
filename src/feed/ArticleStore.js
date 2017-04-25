@@ -1,7 +1,6 @@
 import Immutable from 'immutable';
 import {ReduceStore} from 'flux/utils';
-import {ArticleDispatcher, dispatch} from './ArticleDispatcher';
-import {dispatch as clusterDispatch} from './ClusterDispatcher';
+import {AppDispatcher, dispatch} from '../AppDispatcher';
 import io from 'socket.io-client';
 import axios from 'axios';
 import querystring from 'querystring';
@@ -19,26 +18,25 @@ class ArticleStore extends ReduceStore {
     return Immutable.OrderedMap();
   }
 
-	_getStart(state, label){
-		if (state.size == 0) {
-			return 0;
-		}
-		if (!label) {
-			return state.filter(a => !a.get('label')).size;
-		}
-		return state.filter(a => a.get('label') === label).size;
-	}
+  _getStart(state, label){
+    if (state.size == 0) {
+      return 0;
+    }
+    if (!label) {
+      return state.filter(a => !a.get('label')).size;
+    }
+    return state.filter(a => a.get('label') === label).size;
+  }
 
   reduce (state, action) {
     switch (action.type) {
 
-		case 'article/view-similar':
+    case 'article/view-similar':
 
       axios.get(this.host + '/cluster/' + action.cluster)
-        .then(a => dispatch({ type: 'articles/arrivals', articles: a.data }));
-
-			clusterDispatch({ type: 'cluster/highlight', cluster: action.cluster })
-			return state;
+        .then(a => dispatch({ type: 'articles/arrivals', articles: a.data }))
+        .then(() => dispatch({ type: 'cluster/highlight', cluster: action.cluster }))
+      return state;
 
     case 'article/label':
       console.log(action.label, action.id)
@@ -46,13 +44,13 @@ class ArticleStore extends ReduceStore {
       return state.setIn([action.id, 'label'], action.label);
 
     case 'articles/load':
-			const start = this._getStart(state, action.label);
+      const start = this._getStart(state, action.label);
 
-			const qs = querystring.stringify({
-				start: start,
-				label: action.label,
-				days: 10
-			})
+      const qs = querystring.stringify({
+	start: start,
+	label: action.label,
+	days: 20
+      })
 
       axios.get(this.host + '/articles?' +  qs)
         .then(a => dispatch({ type: 'articles/arrivals', articles: a.data }));
@@ -65,12 +63,12 @@ class ArticleStore extends ReduceStore {
         return state.set(a._id, Immutable.fromJS(a))
       }, state);
 
-			return s.sort((a,b) => {
-				if (a.get('prediction') == b.get('prediction')) {
-					return a.get('published') >= b.get('published') ? -1 : 1;
-				}
-				return a.get('prediction') >= b.get('prediction') ? -1 : 1;
-			})
+      return s.sort((a,b) => {
+	if (a.get('prediction') == b.get('prediction')) {
+	  return a.get('published') >= b.get('published') ? -1 : 1;
+	}
+	return a.get('prediction') >= b.get('prediction') ? -1 : 1;
+      })
 
     default:
       return state;
@@ -80,5 +78,5 @@ class ArticleStore extends ReduceStore {
 
 
 // Export a singleton instance of the store
-const instance = new ArticleStore(ArticleDispatcher);
+const instance = new ArticleStore(AppDispatcher);
 export default instance;

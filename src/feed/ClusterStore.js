@@ -1,6 +1,6 @@
 import Immutable from 'immutable';
 import {ReduceStore} from 'flux/utils';
-import {ClusterDispatcher, dispatch} from './ClusterDispatcher';
+import {AppDispatcher, dispatch} from '../AppDispatcher';
 
 
 class ClusterStore extends ReduceStore {
@@ -11,9 +11,8 @@ class ClusterStore extends ReduceStore {
 
   reduce (state, action) {
     switch (action.type) {
-
-		case 'cluster/highlight':
-			return action.cluster;
+    case 'cluster/highlight':
+      return action.cluster;
 
     default:
       return state;
@@ -23,5 +22,5 @@ class ClusterStore extends ReduceStore {
 
 
 // Export a singleton instance of the store
-const instance = new ClusterStore(ClusterDispatcher);
+const instance = new ClusterStore(AppDispatcher);
 export default instance;

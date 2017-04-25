@@ -3,22 +3,22 @@ import Article from './Article';
 import './Feed.css';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import RaisedButton from 'material-ui/RaisedButton';
-import {dispatch} from './ArticleDispatcher';
+import {dispatch} from '../AppDispatcher';
 
 class Feed extends Component {
 
   _loadMore = () => {
       dispatch({
-          type: 'articles/load',
-					label: this.props.label || null
+        type: 'articles/load',
+	label: this.props.label || null
       })
   }
 
   render() {
     const { articles } = this.props;
     const arts = articles.map(a => {
-				return <li> <Article article={a} highlighted={this.props.highlighted === a.get('cluster')} /> </li>
-		})
+      return <li> <Article article={a} highlighted={this.props.highlighted === a.get('cluster')} /> </li>
+    })
     return (
         <div className="feed">
             <h2> {this.props.header}: </h2>

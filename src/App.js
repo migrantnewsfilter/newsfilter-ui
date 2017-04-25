@@ -4,7 +4,8 @@ import axios from 'axios';
 import {Container} from 'flux/utils';
 import ArticleStore from './feed/ArticleStore';
 import ClusterStore from './feed/ClusterStore';
-import {dispatch} from './feed/ArticleDispatcher';
+import SourceStore from './sources/SourceStore';
+
 import logo from './logo.svg';
 import './App.css';
 import Feed from './feed/Feed';
@@ -22,24 +23,25 @@ import muiTheme from './theme';
 
 class App extends Component {
   static getStores() {
-    return [ArticleStore];
+    return [ArticleStore, ClusterStore, SourceStore];
   }
 
   static calculateState(prevState) {
     return {
       articles: ArticleStore.getState(),
-			highlightedCluster: ClusterStore.getState()
+      highlightedCluster: ClusterStore.getState(),
+      sources: SourceStore.getState()
     };
   }
 
   render() {
 
-		const trash = this.state.articles.filter(a => a.get('label') === 'rejected');
-		const archive = this.state.articles.filter(a => a.get('label') === 'accepted');
+    const trash = this.state.articles.filter(a => a.get('label') === 'rejected');
+    const archive = this.state.articles.filter(a => a.get('label') === 'accepted');
     const unlabelled = this.state.articles.filter(a => !a.get('label'));
+    const sources = this.state.sources;
 
     return (
-
         <MuiThemeProvider muiTheme={muiTheme}>
             <Tabs initialSelectedIndex={0} className="feeds">
                 <Tab label="Feed">
@@ -52,7 +54,7 @@ class App extends Component {
                     <Feed articles={ archive } header="Accepted Articles" label="accepted"  highlighted={this.state.highlightedCluster} />
                 </Tab>
                 <Tab label="Sources">
-                    <Sources />
+                    <Sources sources={ sources }/>
                 </Tab>
             </Tabs>
         </MuiThemeProvider>

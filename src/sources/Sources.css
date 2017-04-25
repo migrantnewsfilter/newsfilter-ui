@@ -1,0 +1,22 @@
+.sources {
+  width: 50%;
+  margin: auto;
+}
+
+.source h2 {
+  font-size: 3em;
+  text-transform: capitalize;
+  margin: 2em 0 0 0;
+}
+
+.source-list {
+  margin: 2em 0;
+}
+
+.list-item svg {
+  margin: 12px;
+}
+
+.feed-submit {
+  margin: 1em auto;
+}
