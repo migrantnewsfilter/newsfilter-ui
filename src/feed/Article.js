@@ -34,7 +34,7 @@ class Article extends Component {
   render() {
     const { article } = this.props;
     const content = article.get('content');
-    const date = new Date(article.get('added').get('$date')).toLocaleString();
+    const date = new Date(article.get('published').get('$date')).toLocaleString();
     const actionsStyles = {};
     const archiveStyles = {
       margin: '0 0 0 1em',
