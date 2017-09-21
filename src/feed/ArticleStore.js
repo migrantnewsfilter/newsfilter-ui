@@ -11,21 +11,15 @@ class ArticleStore extends ReduceStore {
 
     this.host = process.env.REACT_APP_NF_HOST || 'http://localhost:5000'
     this.socket = io.connect(this.host);
-    dispatch({ type: 'articles/load' });
+    // dispatch({ type: 'articles/load' });
   }
 
   getInitialState() {
-    return Immutable.OrderedMap();
-  }
-
-  _getStart(state, label){
-    if (state.size == 0) {
-      return 0;
-    }
-    if (!label) {
-      return state.filter(a => !a.get('label')).size;
-    }
-    return state.filter(a => a.get('label') === label).size;
+    return Immutable.Map({
+      'unlabelled': Immutable.OrderedMap(),
+      'rejected': Immutable.OrderedMap(),
+      'accepted': Immutable.OrderedMap()
+    });
   }
 
   reduce (state, action) {
@@ -39,36 +33,32 @@ class ArticleStore extends ReduceStore {
       return state;
 
     case 'article/label':
-      console.log(action.label, action.id)
       this.socket.emit('label', { '_id': action.id, 'label': action.label })
       return state.setIn([action.id, 'label'], action.label);
 
     case 'articles/load':
-      const start = this._getStart(state, action.label);
-
       const qs = querystring.stringify({
-	start: start,
+	start: action.start,
 	label: action.label,
-	days: 20
+	days: action.filter.get('days'),
+        relevance: action.filter.get('relevance')
       })
 
       axios.get(this.host + '/articles?' +  qs)
-        .then(a => dispatch({ type: 'articles/arrivals', articles: a.data }));
+        .then(a => dispatch({ type: 'articles/arrivals', articles: a.data, label: action.label }));
       return state
 
     case 'articles/arrivals':
-      console.log('arrivals: ', action.articles)
+      console.log('arrivals: ', action.articles, action.label)
 
-      const s = action.articles.reduce((state, a) => {
-        return state.set(a._id, Immutable.fromJS(a))
+      // We replace the entire OrderedMap of articles of this type
+      // with a fresh OrderedMap created from the JSON sent from the server.
+      state = state.delete(action.label)
+      state = state.set(action.label, Immutable.OrderedMap())
+
+      return action.articles.reduce((state, a) => {
+        return state.setIn([action.label, a._id], Immutable.fromJS(a))
       }, state);
-
-      return s.sort((a,b) => {
-	if (a.get('prediction') == b.get('prediction')) {
-	  return a.get('published') >= b.get('published') ? -1 : 1;
-	}
-	return a.get('prediction') >= b.get('prediction') ? -1 : 1;
-      })
 
     default:
       return state;

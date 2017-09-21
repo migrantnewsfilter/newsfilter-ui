@@ -10,7 +10,6 @@ class SourceStore extends ReduceStore {
   constructor(dispatcher){
     super(dispatcher)
     this.getFeeds()
-
   }
 
   getInitialState() {

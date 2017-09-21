@@ -3,24 +3,25 @@ import {ReduceStore} from 'flux/utils';
 import {AppDispatcher, dispatch} from '../AppDispatcher';
 
 
-class ClusterStore extends ReduceStore {
+class FilterStore extends ReduceStore {
 
   getInitialState() {
-    return null;
+    const map = Immutable.Map({ days: 10, relevance: true });
+    return map
   }
 
   reduce (state, action) {
     switch (action.type) {
-    case 'cluster/highlight':
-      return action.cluster;
-
+    case 'filter/days':
+      return state.set('days', action.days)
+    case 'filter/relevance':
+      return state.set('relevance', action.relevance)
     default:
       return state;
     }
   }
 }
 
-
 // Export a singleton instance of the store
-const instance = new ClusterStore(AppDispatcher);
+const instance = new FilterStore(AppDispatcher);
 export default instance;

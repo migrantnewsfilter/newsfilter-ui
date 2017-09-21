@@ -1,0 +1,7 @@
+.filter {
+  margin: 2em auto;
+}
+
+.filter .filter-days {
+  width: 30px;
+}

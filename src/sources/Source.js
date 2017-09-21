@@ -40,17 +40,17 @@ class Source extends Component {
     });
 
     return (
-        <div className="source">
-          <h2> {this.props.source} </h2>
-          <List className="source-list">
-            {feeds}
-          </List>
-          <form className="add-new-feed" onSubmit={ this._onSubmit }>
-            <TextField className="feed-input" hintText={this._getHintText()} fullWidth={true} value={ this.state.input } onChange={ this._onChange }/>
-            <RaisedButton className="feed-submit" primary={true} style={{display: 'block', width: '88px' }}label="Add" type="submit"/>
-          </form>
+      <div className="source">
+        <h2> {this.props.source} </h2>
+        <List className="source-list">
+          {feeds}
+        </List>
+        <form className="add-new-feed" onSubmit={ this._onSubmit }>
+          <TextField className="feed-input" hintText={this._getHintText()} fullWidth={true} value={ this.state.input } onChange={ this._onChange }/>
+          <RaisedButton className="feed-submit" primary={true} style={{display: 'block', width: '88px' }}label="Add" type="submit"/>
+        </form>
 
-        </div>
+      </div>
     );
   }
 }
