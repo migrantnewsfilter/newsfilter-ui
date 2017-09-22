@@ -34,7 +34,11 @@ class ArticleStore extends ReduceStore {
 
     case 'article/label':
       this.socket.emit('label', { '_id': action.id, 'label': action.label })
-      return state.setIn([action.id, 'label'], action.label);
+
+      const article = state.getIn([action.previousLabel, action.id])
+      return state
+            .deleteIn([action.previousLabel, action.id])
+            .setIn([action.label, action.id], article.set('label', action.label))
 
     case 'articles/load':
       const qs = querystring.stringify({

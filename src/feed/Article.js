@@ -20,7 +20,8 @@ class Article extends Component {
     dispatch({
       type: 'article/label',
       id: this.props.article.get('_id'),
-      label: l
+      label: l,
+      previousLabel: this.props.label
     });
   }
 

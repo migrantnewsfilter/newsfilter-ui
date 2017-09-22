@@ -25,7 +25,7 @@ class Feed extends Component {
   render() {
     const { articles } = this.props;
     const arts = articles.map(a => {
-      return <li> <Article article={a} highlighted={this.props.highlighted === a.get('cluster')} /> </li>
+      return <li> <Article article={a} label={this.props.label} highlighted={this.props.highlighted === a.get('cluster')} /> </li>
     })
     return (
       <div className="feed">
