@@ -28,6 +28,7 @@ class Article extends Component {
   _onSimilar = () => {
     dispatch({
       type: 'article/view-similar',
+      label: this.props.label,
       cluster: this.props.article.get('cluster')
     })
   }

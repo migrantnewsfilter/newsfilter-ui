@@ -28,7 +28,7 @@ class ArticleStore extends ReduceStore {
     case 'article/view-similar':
 
       axios.get(this.host + '/cluster/' + action.cluster)
-        .then(a => dispatch({ type: 'articles/arrivals', articles: a.data }))
+        .then(a => dispatch({ type: 'articles/arrivals', articles: a.data, label: action.label }))
         .then(() => dispatch({ type: 'cluster/highlight', cluster: action.cluster }))
       return state;
 
