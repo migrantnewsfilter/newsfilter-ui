@@ -26,7 +26,7 @@ class Feed extends Component {
     const { articles } = this.props;
     const arts = articles.map(a => {
       return <li> <Article article={a} label={this.props.label} highlighted={this.props.highlighted === a.get('cluster')} /> </li>
-    })
+    });
     return (
       <div className="feed">
         <Filter filter={this.props.filter} loadMore = { this._loadMore }></Filter>

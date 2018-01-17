@@ -11,7 +11,7 @@ import logo from './logo.svg';
 import './App.css';
 import Feed from './feed/Feed';
 import Sources from './sources/Sources';
-
+import HowTo from './how-to/HowTo';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
 // Needed for onTouchTap
@@ -58,6 +58,9 @@ class App extends Component {
                 </Tab>
                 <Tab label="Sources">
                     <Sources sources={ sources }/>
+                </Tab>
+                <Tab label="How To">
+                  <HowTo />
                 </Tab>
             </Tabs>
         </MuiThemeProvider>
